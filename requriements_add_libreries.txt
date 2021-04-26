@@ -2,3 +2,4 @@ requests
 lxml
 autopep8
 pandas
+beautifulsoup4
