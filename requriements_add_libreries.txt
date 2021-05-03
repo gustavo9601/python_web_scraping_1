@@ -3,3 +3,5 @@ lxml
 autopep8
 pandas
 beautifulsoup4
+webdriver-manager
+selenium
