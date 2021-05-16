@@ -14,6 +14,9 @@ import scrapy
 # Todos los divs con clase field-item even, en su interior p que no tengan clase, y obtenga el texto
 # //div[@class="field-item even"]//p[not(@class)]/text()
 
+# Todos los div con clase field-item even, dentro todos los a, que no tengan clase y que target sea_blank, extrae el src de la img
+# //div[@class="field-item even"]//a[not(@class) and @target="_blank"]/img/@src
+
 class SpiderCIA(scrapy.Spider):
     name = 'cia'
     start_urls = [
@@ -42,14 +45,15 @@ class SpiderCIA(scrapy.Spider):
     def parse_link(self, response, **kwargs):
 
         link = kwargs['url']
-
         title = response.xpath('//h1[@class="documentFirstHeading"]/text()').get()
+        img = response.xpath('//div[@class="field-item even"]//a[not(@class)]/img/@src').get()
         paragraphs = self.merge_paragraphs(
             response.xpath('//div[@class="field-item even"]//p[not(@class)]/text()').getall())
 
         yield {
             'url': link,
             'title': title,
+            'img': img,
             'paragraphs': paragraphs
         }
 
