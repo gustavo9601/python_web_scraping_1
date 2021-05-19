@@ -15,6 +15,7 @@ import pandas as pd
 
 # Configuracion inicial del loggin
 logging.basicConfig(level=logging.INFO)
+# Especificando al logger en donde se esta ejecutando __name__ => filename.py
 logger = logging.getLogger(__name__)
 
 
@@ -28,11 +29,18 @@ def _news_scraper(news_site_uid):
         article = _fetch_article(news_site_uid, host, link)
 
         if article:
-            articles.append(article)
+            article_structure = {
+                'title': article.title,
+                'body': article.body,
+                'link': link,
+                'host': host
+            }
+            articles.append(article_structure)
             logger.info(f'OK Article: [{link}] for the host [{host}]')
 
     print(f"Articles founded {len(articles)}")
     _save_articles(news_site_uid, articles)
+
 
 def _save_articles(news_site_uid, articles):
     now = datetime.datetime.now().strftime('%Y_%m_%d')
@@ -40,7 +48,7 @@ def _save_articles(news_site_uid, articles):
     out_file_name = f"./../outputs/{now}_{news_site_uid}_articles.csv"
     print(out_file_name)
     df = pd.DataFrame(articles)
-    df.to_csv(out_file_name)
+    df.to_csv(out_file_name, index=False)
 
 
 def _fetch_article(news_site_uid, host, link):
@@ -57,7 +65,7 @@ def _fetch_article(news_site_uid, host, link):
         logger.warning(f'Not found article in the url: [{link}] for the host [{host}]')
         return None
 
-    return article.body
+    return article
 
 
 if __name__ == '__main__':
