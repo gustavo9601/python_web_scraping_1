@@ -7,9 +7,7 @@ Descargar driver de:
 https://chromedriver.chromium.org/
 """
 
-
 class HelloWorld(unittest.TestCase):
-
     # Prepara el entorno de la prueba
     def setUp(self) -> None:
         # Inicializando el driver
@@ -26,7 +24,6 @@ class HelloWorld(unittest.TestCase):
     # Al terminar la prueba se ejecutara
     def tearDown(self):
         self.driver.quit()
-
 
 
 if __name__ == '__main__':
